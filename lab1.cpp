@@ -343,3 +343,85 @@ std::ostream& operator<<(std::ostream& os, Set<T>& set) {
 	}
 	return os;
 }
+
+using namespace std;
+
+int main() {
+	int iarray1[] = { 3, 3, 2, 5, 9, 6 ,6,2,1 };//6
+	int iarray2[] = { 4, 5, 7, 8, 9 };//5
+	int iarray3[] = { 1, 2, 3, 2, 5, 3, 4 };//5
+	int iarray4[] = { 1, 7, 3, 4, 5, 6, 6, 1 };//6
+	float farray1[] = { 1.12, 2.33, 1.45, 5.76, 2.33, 2.33, 9.875 };//7
+	float farray2[] = { 1.34, 3.23, 1.45, 5.76, 8.34 };//5
+	string sarray[] = { "peach", "pear", "apple", "pear" };//4
+	pair<int, double> parray1[] = { make_pair(1, 1.12), make_pair(5, 3.12), make_pair(3, 7.12), make_pair(9, 4.12), make_pair(5, 3.12) };//5
+	pair<int, double> parray2[] = { make_pair(3, 1.12), make_pair(5, 3.12), make_pair(1, 1.12), make_pair(5, 7.12), make_pair(6, 8.88) };//5
+
+	auto iset1 = Set<int>(iarray1, 9);
+	auto iset2 = Set<int>(iarray2, 5);
+
+	auto iset3 = Set<int>(iarray3, 5);
+	auto iset4 = Set<int>(iarray4, 6);
+
+	auto fset1 = Set<float>(farray1, 7);
+	auto fset2 = Set<float>(farray2, 5);
+
+	auto sset1 = Set<string>(sarray, 3);
+
+	auto pset1 = Set<pair<int, double>>(parray1, 5);
+	auto pset2 = Set<pair<int, double>>(parray2, 5);
+
+	std::cout << "Set of int" << "\n";
+	std::cout << iset1 << "\n\n";
+	std::cout << "Set of float" << "\n";
+	std::cout << fset1 << "\n\n";
+	std::cout << "Set of string" << "\n";
+	std::cout << sset1 << "\n\n";
+	std::cout << "Set of pair" << "\n";
+	std::cout << pset1 << "\n\n";
+
+	std::cout << "Sum of sets(int):" << "\n";
+	std::cout << iset1 << " + " << iset2 << " = ";
+	auto sum = iset1 + iset2;
+	std::cout << sum;
+	std::cout << "\n\n";
+
+	std::cout << "Difference of sets(float):" << "\n";
+	std::cout << fset1 << " - " << fset2 << " = ";
+	auto dif = fset1 - fset2;
+	std::cout << dif;
+	std::cout << "\n\n";
+
+	std::cout << "+= and -= with string set:\n";
+	std::cout << sset1 << "\n";
+	sset1 += "orange";
+	sset1 -= "apple";
+	std::cout << sset1;
+	std::cout << "\n\n";
+
+	std::cout << "Intersection of sets(int):" << "\n";
+	std::cout << iset1 << ",  " << iset2 << " = ";
+	auto inter_int = iset1.intersection(iset2);
+	std::cout << inter_int;
+	std::cout << "\n\n";
+
+	std::cout << "Relation of sets(int):" << "\n";
+	std::cout << iset4 << ",  " << iset3 << endl;
+	std::cout << "\n\n";
+
+	std::cout << "Find duplicates in set(int):" << "\n";
+	std::cout << "{ 1, 2, 3, 4, 5, 3, 2 } " << "\n";
+	iset3.find_duplicates(iarray3, 7);
+	std::cout << "\n\n";
+
+	std::cout << "No find duplicates in set(int):" << "\n";
+	std::cout << "{ 4, 5, 7, 8, 9 } " << "\n";
+	iset2.find_duplicates(iarray2, 5);
+	std::cout << "\n\n";
+
+	std::cout << "random c-or: \n";
+	auto rset1 = Set<int>(10, 1, 100);
+	std::cout << rset1;
+
+	return 0;
+}
