@@ -46,6 +46,143 @@ public:
 			_data[i] = set[i];
 		}
 	}
+	/////////
+	Set& operator=(const Set& set) 
+	{
+		Set copy(set);
+		swap(copy);
+		return *this;
+	}
+
+	bool operator==(const Set& set) 
+	{
+		if (_size != set.get_size()) return false;
+		for (int i = 0; i < _size; i++)
+		{
+			if (std::abs(_data[i] - set[i]) >= epsilon) return false;
+		}
+		return true;
+	}
+
+	bool operator!=(const Set& set)//
+	{
+		return !(*this == set);
+	}
+
+	Set<T> intersection(const Set<T>& set) //
+	{
+		auto dif = *this - set;
+
+		return (*this - dif);
+	}
+
+	void swap(Set<T>& set) noexcept //
+	{
+		std::swap(_data, set.get_data());
+		std::swap(_size, set.get_size());
+	}
+
+	T& operator[](int index) //
+	{
+		if (index < 0 || index >= _size) {
+			throw std::out_of_range("MySet::operator[], index is out of range");
+		}
+		return _data[index];
+	}
+
+	const T& operator[](int index) const 
+	{
+		if (index < 0 || index >= _size) {
+			throw std::out_of_range("MySet::operator[] const, index is out of range");
+		}
+		return _data[index];
+	}
+
+	Set& operator+=(const Set& set) //
+	{
+		int new_size = _size + set.get_size();
+
+		T* new_data = new T[new_size]();
+
+		for (int i = 0; i < _size; ++i)
+		{
+			new_data[i] = _data[i];
+		}
+
+		int j = 0;
+
+		for (int i = _size; i < new_size; ++i)
+		{
+			new_data[i] = set[j];
+			++j;
+		}
+
+		delete[] _data;
+
+		int* actual_size = new int(0);
+
+		_data = unique_data(new_data, new_size, actual_size);
+
+		delete[] new_data;
+
+		_size = *actual_size;
+
+		this->sort();
+
+		return *this;
+	}
+
+	Set& operator-=(const Set& set) 
+	{
+		for (int i = 0; i < set.get_size(); i++)
+		{
+			int index = element_is_there(_data, _size, set[i]);
+			if (index != -1) {
+
+				this->remove(index);
+			}
+		}
+		return *this;
+	}
+
+	Set& operator+=(const T& value) //
+	{
+		if (element_is_there(_data, _size, value) != -1) {
+			return *this;
+		}
+		int new_size = _size + 1;
+		T* new_data = new T[new_size];
+		for (int i = 0; i < _size; i++)
+		{
+			new_data[i] = _data[i];
+		}
+		new_data[new_size - 1] = value;
+		delete[] _data;
+		_data = new_data;
+		_size = new_size;
+		this->sort();
+		return *this;
+	}
+
+	Set& operator-=(const T& value) //
+	{
+		int index = element_is_there(_data, _size, value);
+		if (index == -1) {
+			return *this;
+		}
+		this->remove(index);
+		return *this;
+	}
+
+	int find(const T& value) const //
+	{
+		for (int i = 0; i < _size; i++)
+		{
+			if (_data[i] == value) return i;
+		}
+		return -1;
+	}
+
 
 private:
 	int element_is_there(T* data, int size, const T& value) {
